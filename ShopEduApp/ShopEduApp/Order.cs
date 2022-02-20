@@ -4,18 +4,18 @@ using System.Data;
 
 namespace ShopEduApp
 {
-    public class Goods
+    public class Order
     {
         [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
-        public int GoodsId { get; set; }
+        public int OrderId { get; set; }
         [Display(Name = "Наименование")]
         public string GoodsName { get; set; }
-        [Display(Name = "Производитель")] 
+        [Display(Name = "Производитель")]
         public string GoodsBrand { get; set; }
-        [Display(Name = "Модель")] 
+        [Display(Name = "Модель")]
         public string GoodsModel { get; set; }
-        [Display(Name = "Страна производства")] 
+        [Display(Name = "Страна производства")]
         public string GoodsCountry { get; set; }
         [Display(Name = "Цена")]
         public decimal Price { get; set; }
