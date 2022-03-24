@@ -1,17 +1,6 @@
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.AspNetCore.Server.Kestrel.Core;
-
-public static IHostBuilder CreateHostBuilder(string[] args) =>
-    Host.CreateDefaultBuilder(args)
-        .ConfigureServices((context, services) =>
-        {
-            services.Configure<KestrelServerOptions>(
-                context.Configuration.GetSection("Kestrel"));
-        })
-        .ConfigureWebHostDefaults(webBuilder =>
-        {
-            webBuilder.UseStartup<Startup>();
-        }); 
+using Serilog;
 
 
 var builder = WebApplication.CreateBuilder(args);
@@ -34,8 +23,40 @@ if (app.Environment.IsDevelopment())
 
 //app.UseHttpsRedirection();
 
-app.UseAuthorization();
+//app.UseAuthorization();
 
 app.MapControllers();
 
 app.Run();
+
+namespace Seriloger
+{
+    class Program
+    {
+        static void Main()
+        {
+            Log.Logger = new LoggerConfiguration()
+                .MinimumLevel.Debug()
+                .WriteTo.Console()
+                .WriteTo.File("logs/myapp.txt", rollingInterval: RollingInterval.Day)
+                .CreateLogger();
+
+            Log.Information("Hello, world!");
+
+            int a = 10, b = 0;
+            try
+            {
+                Log.Debug("Dividing {A} by {B}", a, b);
+                Console.WriteLine(a / b);
+            }
+            catch (Exception ex)
+            {
+                Log.Error(ex, "Something went wrong");
+            }
+            finally
+            {
+                Log.CloseAndFlush();
+            }
+        }
+    }
+}
